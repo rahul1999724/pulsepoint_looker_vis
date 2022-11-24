@@ -1,7 +1,4 @@
 looker.plugins.visualizations.add({
-  // Id and Label are legacy properties that no longer have any function besides documenting
-  // what the visualization used to have. The properties are now set via the manifest
-  // form within the admin/visualizations page of Looker
   id: "hello_world",
   label: "Hello World",
   options: {
@@ -20,7 +17,7 @@ looker.plugins.visualizations.add({
   create: function(element, config) {
 
     // Insert a <style> tag with some styles we'll use later.
-    element.innerHTML = `
+    var css = element.innerHTML = `
       <style>
         .hello-world-vis {
           /* Vertical centering */
@@ -32,9 +29,11 @@ looker.plugins.visualizations.add({
         }
         .hello-world-text-large {
           font-size: 72px;
+          font-size_pop: 22px;
         }
         .hello-world-text-small {
           font-size: 18px;
+          font-size-pop: 18px;
         }
       </style>
     `;
@@ -45,26 +44,33 @@ looker.plugins.visualizations.add({
 
     // Create an element to contain the text.
     this._textElement = container.appendChild(document.createElement("div"));
+    this._textElement2 = container.appendChild(document.createElement("div2"));
 
   },
   // Render in response to the data or settings changing
-  updateAsync: function(data, element, config, queryResponse, details, done) {
+  update: function(data, element, config, queryResponse) {
 
     // Clear any errors from previous updates
     this.clearErrors();
 
     // Throw some errors and exit if the shape of the data isn't what this chart needs
-    if (0 == 0) {
+    if (queryResponse.fields.dimensions.length == 0) {
       this.addError({title: "No Dimensions", message: "This chart requires dimensions."});
       return;
     }
 
     // Grab the first cell of the data
     var firstRow = data[0];
-    var firstCell = "xxx";//firstRow[queryResponse.fields.measures[0].name];
+    var firstCell = firstRow[queryResponse.fields.measures[0].name];
+    var firstDim = firstRow[queryResponse.fields.dimensions[0].name];
+    
 
     // Insert the data into the page
-    this._textElement.innerHTML = LookerCharts.Utils.htmlForCell(firstCell);
+    // This would be unstyled, you'd have to actually construct the HTML string if you wanted it styled
+    this._textElement.innerHTML = firstCell;
+    this._textElement2.innerHTML = firstDim;
+    // Insert the data into the page
+    //this._textElement.innerHTML = LookerCharts.Utils.htmlForCell(firstCell);
 
     // Set the size to the user-selected size
     if (config.font_size == "small") {
@@ -72,7 +78,12 @@ looker.plugins.visualizations.add({
     } else {
       this._textElement.className = "hello-world-text-large";
     }
-    // We are done rendering! Let Looker know.
-    done()
+    
+    if (config.font_size_pop == "small") {
+      this._textElement2.className = "hello-world-text-small";
+    } else {
+      this._textElement2.className = "hello-world-text-large";
+    }
+
   }
 });
