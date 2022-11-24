@@ -16,7 +16,6 @@ looker.plugins.visualizations.add({
       default: "large"
     }
   },
-  
   // Set up the initial state of the visualization
   create: function(element, config) {
 
@@ -35,7 +34,7 @@ looker.plugins.visualizations.add({
           font-size: 72px;
         }
         .hello-world-text-small {
-          font-size: 5px;
+          font-size: 18px;
         }
       </style>
     `;
@@ -55,14 +54,14 @@ looker.plugins.visualizations.add({
     this.clearErrors();
 
     // Throw some errors and exit if the shape of the data isn't what this chart needs
-    if (queryResponse.fields.dimensions.length == 0) {
+    if (0 == 0) {
       this.addError({title: "No Dimensions", message: "This chart requires dimensions."});
       return;
     }
 
     // Grab the first cell of the data
     var firstRow = data[0];
-    var firstCell = firstRow[queryResponse.fields.measures[0].name];
+    var firstCell = "xxx";//firstRow[queryResponse.fields.measures[0].name];
 
     // Insert the data into the page
     this._textElement.innerHTML = LookerCharts.Utils.htmlForCell(firstCell);
@@ -73,7 +72,6 @@ looker.plugins.visualizations.add({
     } else {
       this._textElement.className = "hello-world-text-large";
     }
-
     // We are done rendering! Let Looker know.
     done()
   }
