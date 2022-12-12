@@ -1,9 +1,9 @@
     constant: vis_id {
-        value: "PP_custom"
+        value: "pp_custom_single_value"
         export: override_optional
     }
     constant: vis_label {
-        value: "PP Custom Label"
+        value: "Single Value (Custom)"
         export: override_optional
     }
     visualization: {
