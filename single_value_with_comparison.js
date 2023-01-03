@@ -1,3 +1,4 @@
+##OK
 looker.plugins.visualizations.add({
   options: {
     top_value_color: {
